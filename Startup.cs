@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
+using music_store.Models;
 
 namespace music_store
 {
@@ -29,6 +31,9 @@ namespace music_store
         {
             // Add framework services.
             services.AddMvc();
+
+            // Set para ser SQLIte
+            services.AddDbContext<MvcMovieContext>(options => options.UseSqlite("Data Source=MvcMovie.db"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +60,8 @@ namespace music_store
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            DBinitialize.EnsureCreated(app.ApplicationServices);
         }
     }
 }
